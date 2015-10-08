@@ -6,12 +6,14 @@
 
 import com.atul.JavaOpenCV.Imshow;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.opencv.core.*;
 import org.opencv.highgui.*;
 import org.opencv.imgproc.Imgproc;
 
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +27,27 @@ public class Main {
         System.out.println(Core.NATIVE_LIBRARY_NAME);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat m  = Mat.eye(3, 3, CvType.CV_8UC1);
-        System.out.println("m = \n " + m.dump());
+        //System.out.println("m = \n " + m.dump());
+
+        //This sucks
+        File desktopFile = new File("C:\\Users\\Will\\Google Drive\\seizure.JPG");
+        File laptopFile = new File("C:\\Users\\"); //TODO
+        String workingFile;
+
+        if (desktopFile.isFile()) {
+            workingFile = desktopFile.getPath();
+        }
+        else if (laptopFile.isFile()) {
+            workingFile = laptopFile.getPath();
+        }
+        else {
+            System.err.println("No valid images.");
+            workingFile = "nope";
+
+        }
 
         //one fucking week.
-        Mat src=Highgui.imread("C:\\Users\\Will\\Desktop\\seizure.JPG",Highgui.CV_LOAD_IMAGE_GRAYSCALE);
+        Mat src=Highgui.imread(workingFile,Highgui.CV_LOAD_IMAGE_GRAYSCALE);
         Mat moo2 = src.clone();
 
         //int rng = (int)(Math.random() * 10);
@@ -83,7 +102,7 @@ public class Main {
 
         Imgproc.drawContours(moo2, contours, -1, color, 3);
 
-        Highgui.imwrite("C:\\Users\\Will\\Desktop\\seizurePost.JPG", moo2);
+        //Highgui.imwrite("C:\\Users\\Will\\Google Drive\\seizurePost.JPG", moo2);
         //Highgui.imwrite("C:\\Users\\Will\\Desktop\\seizureContour.JPG", moo3);
 
         Imshow im = new Imshow("Post");
